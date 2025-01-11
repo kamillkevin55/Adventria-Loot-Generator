@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventria Loot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-body">
+        <div class="workspace">
+            <h1>Loot generator</h1>
+            <div class="nav-bar">
+                <button id="GB">
+                    <div>
+                        <h3>
+                            Gem Bunny
+                        </h3>
+                    </div>
+                </button>
+            </div>
+            <div id="container">
+                
+            </div>            
+        </div>
+    </div>
+
+</body>
+<script>
+const container = document.getElementById('container');
+
+document.addEventListener("DOMContentLoaded", function () {
+    // Select the existing "GB" button
+    const gemBunnyButton = document.getElementById("GB");
+
+    // Check if the "GB" button exists
+    if (gemBunnyButton) {
+        // Add the event listener for the Gem Bunny button (id="GB")
+        gemBunnyButton.addEventListener("click", function () {
+            container.innerHTML = "";
+
+            const lootButton = document.createElement("button");
+            lootButton.id = "loot";
+            lootButton.style.width = "70px";
+            lootButton.style.height = "30px";
+            lootButton.style.fontSize = "20px";
+            lootButton.textContent = "Loot!";
+
+            // Create the last roll heading
+            const lastRoll = document.createElement("h3");
+            lastRoll.id = "lastRoll";
+            lastRoll.textContent = "Last Roll: 0";  // Initially set to 0
+
+            // Create the table
+            const table = document.createElement("table");
+
+            // Create the first row (the names and percentages)
+            const row1 = document.createElement("tr");
+            const items = [
+                "Amethyst (11%)",
+                "Topaz (11%)",
+                "Sapphire (11%)",
+                "Opal (11%)",
+                "Emerald (11%)",
+                "Ruby (11%)",
+                "Diamond (11%)",
+                "Onyx (11%)",
+                "Aquamarine (11%)",
+                "Crystal Dagger (1%)",
+                "Gemstone Bunny Core (0.001% additional drop)"
+            ];
+
+            items.forEach(item => {
+                const td = document.createElement("td");
+                td.textContent = item;
+                row1.appendChild(td);
+            });
+
+            // Create the second row (the initial counts, all set to 0)
+            const row2 = document.createElement("tr");
+            items.forEach((_, index) => {
+                const td = document.createElement("td");
+                td.id = items[index].toLowerCase().replace(/\([^)]*\)/, '').trimEnd().replace(' ','_').replace(' ','_');  // Creating the id based on item name
+                td.textContent = "0";
+                row2.appendChild(td);
+            });
+
+            // Append rows to the table
+            table.appendChild(row1);
+            table.appendChild(row2);
+
+            // Append the button, lastRoll, and table to the container
+            container.appendChild(lootButton);
+            container.appendChild(lastRoll);
+            container.appendChild(table);
+
+            // Add the event listener for the Loot! button
+            lootButton.addEventListener("click", function () {
+            
+                // Generate a random number between 1 and 100 (floored)
+                const randomNumber = Math.floor(Math.random() * 100) + 1;
+
+                // Display the random number in the lastRoll
+                lastRoll.textContent = "Last Roll: " + randomNumber;
+
+                // Determine which item corresponds to the random number
+                if (randomNumber >= 1 && randomNumber <= 11) {
+                    incrementItemCount("amethyst");
+                } else if (randomNumber >= 12 && randomNumber <= 22) {
+                    incrementItemCount("topaz");
+                } else if (randomNumber >= 23 && randomNumber <= 33) {
+                    incrementItemCount("sapphire");
+                } else if (randomNumber >= 34 && randomNumber <= 44) {
+                    incrementItemCount("opal");
+                } else if (randomNumber >= 45 && randomNumber <= 55) {
+                    incrementItemCount("emerald");
+                } else if (randomNumber >= 56 && randomNumber <= 66) {
+                    incrementItemCount("ruby");
+                } else if (randomNumber >= 67 && randomNumber <= 77) {
+                    incrementItemCount("diamond");
+                } else if (randomNumber >= 78 && randomNumber <= 88) {
+                    incrementItemCount("onyx");
+                } else if (randomNumber >= 89 && randomNumber <= 99) {
+                    incrementItemCount("aquamarine");
+                } else {
+                    incrementItemCount("crystal_dagger");
+                }
+
+                // Secondary random number generator for Gemstone Bunny Core
+                const gemstoneBunnyRandom = Math.floor(Math.random() * 100000) + 1;
+
+                // If the number is 100000, increment the Gemstone Bunny Core count
+                if (gemstoneBunnyRandom === 100000) {
+                    incrementItemCount("gemstone_bunny_core");
+                }
+            });
+
+            // Function to increment item count
+            function incrementItemCount(itemId) {
+                const itemCell = document.getElementById(itemId);
+                itemCell.textContent = parseInt(itemCell.textContent) + 1;
+            }
+        });
+    }
+});
+
+
+
+    //100
+    //1-11 - Amethyst
+    //12-22 - Topaz
+    //23-33 - Opal
+    //...
+    //100 - Crystal Dagger
+
+    //Secondary Roll:Ű
+    //Max - 100000
+    //1-99999 - Nothing
+    //100000 - Gemstone Bunny Core
+</script>
+</html>
